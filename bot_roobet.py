@@ -1,12 +1,11 @@
-import logging
-from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+import telebot
+import os
 
-logging.basicConfig(level=logging.INFO)
+TOKEN = os.environ.get("BOT_TOKEN", "8863397866:AAEvqI2Hh77cYfoz8Avga0ABrOj66C-g1Bc")
+bot = telebot.TeleBot(TOKEN)
 
-TOKEN = "8863397866:AAEvqI2Hh77cYfoz8Avga0ABrOj66C-g1Bc"
-
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+@bot.message_handler(commands=["start"])
+def send_welcome(message):
     text = (
         "🎰 Roobet — BONUS2026\n\n"
         "🔑 Promo code: BONUS2026\n"
@@ -20,10 +19,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "3️⃣ Start playing and get your share of $100K weekly\n\n"
         "✅ Good luck!"
     )
-    await update.message.reply_text(text)
+    bot.reply_to(message, text)
 
-if __name__ == "__main__":
-    app = ApplicationBuilder().token(TOKEN).build()
-    app.add_handler(CommandHandler("start", start))
-    print("Roobet bot started...")
-    app.run_polling()
+print("Roobet bot started...")
+bot.infinity_polling()
